@@ -1,0 +1,635 @@
+State,state_code,District,district_code
+Andaman and Nicobar,35~28,Port Blair,1
+Andhra Pradesh,28~2,Ananthapur,2
+Andhra Pradesh,28~2,Chittoor,3
+Andhra Pradesh,28~2,East Godavari,4
+Andhra Pradesh,28~2,Guntur,5
+Andhra Pradesh,28~2,Kadapa,7
+Andhra Pradesh,28~2,Krishna,11
+Andhra Pradesh,28~2,Kurnool,10
+Andhra Pradesh,28~2,Nellore,15
+Andhra Pradesh,28~2,Prakasham,17
+Andhra Pradesh,28~2,Srikakulam,19
+Andhra Pradesh,28~2,Visakapatnam,20
+Andhra Pradesh,28~2,Vizianagaram,21
+Andhra Pradesh,28~2,West Godavari,23
+Assam,18~6,Baksa,27
+Assam,18~6,Barpeta,20
+Assam,18~6,Bongaigaon,9
+Assam,18~6,Cachar,13
+Assam,18~6,Chirang,25
+Assam,18~6,Darrang,8
+Assam,18~6,Dhemaji,17
+Assam,18~6,Dhubri,16
+Assam,18~6,Dibrugarh,7
+Assam,18~6,Dima Hasao,28
+Assam,18~6,Goalpara,18
+Assam,18~6,Golaghat,19
+Assam,18~6,Hailakandi,21
+Assam,18~6,Jorhat,11
+Assam,18~6,Kamrup,23
+Assam,18~6,Kamrup Metro,1
+Assam,18~6,Karbi Anglong,26
+Assam,18~6,Karimganj,12
+Assam,18~6,Kokrajhar,22
+Assam,18~6,Lakhimpur,5
+Assam,18~6,Morigaon,4
+Assam,18~6,Nagaon,10
+Assam,18~6,Nalbari,15
+Assam,18~6,Sivasagar,3
+Assam,18~6,Sonitpur,6
+Assam,18~6,Tinsukia,2
+Assam,18~6,Udalguri,24
+Bihar,10~8,Patna,1
+Bihar,10~8,Kaimur,2
+Bihar,10~8,Samastipur,3
+Bihar,10~8,Saran,4
+Bihar,10~8,Katihar,5
+Bihar,10~8,Begusarai,6
+Bihar,10~8,Banka,7
+Bihar,10~8,Purnea,9
+Bihar,10~8,Motihari,10
+Bihar,10~8,Munger,11
+Bihar,10~8,Madhepura,12
+Bihar,10~8,Rohtas Sasaram,13
+Bihar,10~8,Khagaria,14
+Bihar,10~8,Jamui,15
+Bihar,10~8,Aurangabad,16
+Bihar,10~8,Darbhanga,17
+Bihar,10~8,Madhubani,18
+Bihar,10~8,Lakhisarai,19
+Bihar,10~8,Sheikhpura,20
+Bihar,10~8,Saharsa,21
+Bihar,10~8,Supaul,22
+Bihar,10~8,Gopalganj,23
+Bihar,10~8,Araria,24
+Bihar,10~8,Kishanganj,25
+Bihar,10~8,Buxar,26
+Bihar,10~8,Nawada,27
+Bihar,10~8,Bettiah,28
+Bihar,10~8,Siwan,29
+Bihar,10~8,Nalanda,30
+Bihar,10~8,Sitamarhi,31
+Bihar,10~8,Bhojpur,33
+Bihar,10~8,Bhagalpur,34
+Bihar,10~8,Gaya,35
+Bihar,10~8,Jehanabad,36
+Bihar,10~8,Sheohar,37
+Bihar,10~8,Muzaffarpur,38
+Chandigarh,4~27,Chandigarh,1
+Chhattisgarh,22~18,Korba,1
+Chhattisgarh,22~18,Bilaspur,2
+Chhattisgarh,22~18,Raipur,3
+Chhattisgarh,22~18,Surguja,4
+Chhattisgarh,22~18,Dhamtari,5
+Chhattisgarh,22~18,Raigarh,6
+Chhattisgarh,22~18,Durg,7
+Chhattisgarh,22~18,Kabirdham,9
+Chhattisgarh,22~18,Rajnandgaon,10
+Chhattisgarh,22~18,Koriya,11
+Chhattisgarh,22~18,Mahasamund,12
+Chhattisgarh,22~18,Kanker,13
+Chhattisgarh,22~18,Bastar,15
+Chhattisgarh,22~18,Jashpur,16
+Chhattisgarh,22~18,Dantewada,17
+Chhattisgarh,22~18,Janjgir,18
+Chhattisgarh,22~18,Balod,19
+Chhattisgarh,22~18,Bemetara,20
+Chhattisgarh,22~18,Surajpur,21
+Chhattisgarh,22~18,Kondagaon,22
+Chhattisgarh,22~18,Balodabazar,23
+Chhattisgarh,22~18,Mungeli,24
+Chhattisgarh,22~18,Balrampur,25
+Delhi,7~26,North East,1
+Delhi,7~26,Shahdara,2
+Delhi,7~26,East,3
+Delhi,7~26,North,4
+Delhi,7~26,North West,5
+Delhi,7~26,South West,6
+Delhi,7~26,New Delhi,7
+Delhi,7~26,Central,8
+Delhi,7~26,West,9
+Delhi,7~26,South,10
+Delhi,7~26,South East,11
+Diu and Daman,25~31,Diu,1
+Diu and Daman,25~31,Daman,2
+DNH at Silvasa,26~32,Silvasa,1
+Goa,30~30,North Goa,1
+Goa,30~30,South Goa,2
+Gujarat,24~17,Gandhinagar,11
+Gujarat,24~17,Ahmedabad,13
+Gujarat,24~17,Surat,14
+Gujarat,24~17,Mahesana,15
+Gujarat,24~17,Rajkot,16
+Gujarat,24~17,Amreli,17
+Gujarat,24~17,Anand,18
+Gujarat,24~17,Banaskantha,19
+Gujarat,24~17,Bharuch,20
+Gujarat,24~17,Bhavnagar,21
+Gujarat,24~17,Dahod,22
+Gujarat,24~17,Jamnagar,23
+Gujarat,24~17,Junagadh,24
+Gujarat,24~17,Kheda,25
+Gujarat,24~17,Kachchh,26
+Gujarat,24~17,Panchmahal,27
+Gujarat,24~17,Patan,28
+Gujarat,24~17,Sabarkantha,29
+Gujarat,24~17,Surendranagar,30
+Gujarat,24~17,Vadodara,31
+Gujarat,24~17,Navsari,32
+Gujarat,24~17,Narmada,33
+Gujarat,24~17,Tapi,34
+Gujarat,24~17,Valsad,35
+Gujarat,24~17,Porbandar,36
+Gujarat,24~17,Gir Somnath,37
+Gujarat,24~17,Aravali,38
+Gujarat,24~17,Morbi,39
+Gujarat,24~17,Devbhumi Dwarka,40
+Gujarat,24~17,Chhota Udaipur,41
+Gujarat,24~17,Mahisagar,42
+Gujarat,24~17,Botad,43
+Haryana,6~14,Karnal,1
+Haryana,6~14,Sirsa,2
+Haryana,6~14,Ambala,3
+Haryana,6~14,Bhiwani,4
+Haryana,6~14,Faridabad,5
+Haryana,6~14,Gurugram,6
+Haryana,6~14,Hisar,7
+Haryana,6~14,Jhajjar,8
+Haryana,6~14,Jind,9
+Haryana,6~14,Kurukshetra,10
+Haryana,6~14,Mahendragarh,11
+Haryana,6~14,Rohtak,12
+Haryana,6~14,Sonepat,13
+Haryana,6~14,Panchkula,14
+Haryana,6~14,Fatehabad,15
+Haryana,6~14,Kaithal,16
+Haryana,6~14,Rewari,17
+Haryana,6~14,Panipat,18
+Haryana,6~14,Nuh,19
+Haryana,6~14,Yamunanagar,20
+Haryana,6~14,Palwal,23
+Himachal Pradesh,2~5,Hamirpur,1
+Himachal Pradesh,2~5,Kangra,2
+Himachal Pradesh,2~5,Sirmaur,3
+Himachal Pradesh,2~5,Una,4
+Himachal Pradesh,2~5,Solan,5
+Himachal Pradesh,2~5,Mandi,6
+Himachal Pradesh,2~5,Bilaspur,7
+Himachal Pradesh,2~5,Chamba,8
+Himachal Pradesh,2~5,Kinnaur,9
+Himachal Pradesh,2~5,Kullu,10
+Himachal Pradesh,2~5,Shimla,11
+Jammu and Kashmir,1~12,Kathua,1
+Jammu and Kashmir,1~12,Udhampur,2
+Jammu and Kashmir,1~12,Baramulla,3
+Jammu and Kashmir,1~12,Anantnag,4
+Jammu and Kashmir,1~12,Srinagar,5
+Jammu and Kashmir,1~12,Pulwama,6
+Jammu and Kashmir,1~12,Ganderbal,7
+Jammu and Kashmir,1~12,Budgam,8
+Jammu and Kashmir,1~12,Reasi,9
+Jammu and Kashmir,1~12,Shopian,10
+Jammu and Kashmir,1~12,Kupwara,11
+Jammu and Kashmir,1~12,Poonch,12
+Jammu and Kashmir,1~12,Rajouri,13
+Jammu and Kashmir,1~12,Ramban,14
+Jammu and Kashmir,1~12,Doda,15
+Jammu and Kashmir,1~12,Bandipora,18
+Jammu and Kashmir,1~12,Jammu,19
+Jammu and Kashmir,1~12,Kulgam,20
+Jammu and Kashmir,1~12,Samba,21
+Jammu and Kashmir,1~12,Kishtwar,22
+Jharkhand,20~7,Bokaro,1
+Jharkhand,20~7,Dumka,2
+Jharkhand,20~7,Koderma,3
+Jharkhand,20~7,Pashchimi Singhbhum,4
+Jharkhand,20~7,Gumla,5
+Jharkhand,20~7,Godda,6
+Jharkhand,20~7,Hazaribagh,7
+Jharkhand,20~7,Lohardaga,8
+Jharkhand,20~7,Dhanbad,9
+Jharkhand,20~7,Giridih,10
+Jharkhand,20~7,Purbi Singhbhum,11
+Jharkhand,20~7,Jamtara,12
+Jharkhand,20~7,Chatra,13
+Jharkhand,20~7,Pakur,14
+Jharkhand,20~7,Seraikella,15
+Jharkhand,20~7,Deoghar,16
+Jharkhand,20~7,Palamu,17
+Jharkhand,20~7,Simdega,18
+Jharkhand,20~7,Latehar,19
+Jharkhand,20~7,Garhwa,20
+Jharkhand,20~7,Sahibganj,21
+Jharkhand,20~7,Ranchi,22
+Jharkhand,20~7,Ramgarh,23
+Jharkhand,20~7,Khunti,24
+Karnataka,29~3,Belagavi,1
+Karnataka,29~3,Bagalkot,2
+Karnataka,29~3,Vijayapura,3
+Karnataka,29~3,Kalaburagi,4
+Karnataka,29~3,Bidar,5
+Karnataka,29~3,Raichur,6
+Karnataka,29~3,Koppal,7
+Karnataka,29~3,Gadag,8
+Karnataka,29~3,Dharwad,9
+Karnataka,29~3,Uttara Kannada,10
+Karnataka,29~3,Haveri,11
+Karnataka,29~3,Ballari,12
+Karnataka,29~3,Chitradurga,13
+Karnataka,29~3,Davangere,14
+Karnataka,29~3,Shivamogga,15
+Karnataka,29~3,Udupi,16
+Karnataka,29~3,Chikkamagaluru,17
+Karnataka,29~3,Tumakuru,18
+Karnataka,29~3,Kolar,19
+Karnataka,29~3,Bengaluru,20
+Karnataka,29~3,Bengaluru Rural,21
+Karnataka,29~3,Mandya,22
+Karnataka,29~3,Hassan,23
+Karnataka,29~3,Dakshina Kannada,24
+Karnataka,29~3,Kodagu,25
+Karnataka,29~3,Mysuru,26
+Karnataka,29~3,Chamrajnagar,27
+Karnataka,29~3,Ramanagaram,28
+Karnataka,29~3,Chikkaballapur,29
+Karnataka,29~3,Yadgir,30
+Kerala,32~4,Kasaragod,1
+Kerala,32~4,Ernakulam,2
+Kerala,32~4,Kannur,3
+Kerala,32~4,Thrissur,4
+Kerala,32~4,Kozhikode,5
+Kerala,32~4,Alappuzha,6
+Kerala,32~4,Idukki,7
+Kerala,32~4,Palakkad,8
+Kerala,32~4,Thiruvananthapuram,9
+Kerala,32~4,Kottayam,10
+Kerala,32~4,Malappuram,11
+Kerala,32~4,Pathanamthitta,12
+Kerala,32~4,Lakshadweep,13
+Kerala,32~4,Kollam,15
+Kerala,32~4,Wayanad,16
+Ladakh,37~33,Kargil,1
+Ladakh,37~33,Leh,2
+Madhya Pradesh,23~23,Alirajpur,8
+Madhya Pradesh,23~23,Anuppur,22
+Madhya Pradesh,23~23,Ashoknagar,48
+Madhya Pradesh,23~23,Balaghat,26
+Madhya Pradesh,23~23,Barwani,18
+Madhya Pradesh,23~23,Betul,37
+Madhya Pradesh,23~23,Bhind,29
+Madhya Pradesh,23~23,Bhopal,50
+Madhya Pradesh,23~23,Burhanpur,49
+Madhya Pradesh,23~23,Chhatarpur,39
+Madhya Pradesh,23~23,Chhindwara,20
+Madhya Pradesh,23~23,Damoh,27
+Madhya Pradesh,23~23,Datia,13
+Madhya Pradesh,23~23,Dewas,40
+Madhya Pradesh,23~23,Dhar,38
+Madhya Pradesh,23~23,Dindori,6
+Madhya Pradesh,23~23,Guna,30
+Madhya Pradesh,23~23,Gwalior,44
+Madhya Pradesh,23~23,Harda,4
+Madhya Pradesh,23~23,Hoshangabad,3
+Madhya Pradesh,23~23,Indore,47
+Madhya Pradesh,23~23,Jabalpur,1
+Madhya Pradesh,23~23,Jhabua,9
+Madhya Pradesh,23~23,Katni,34
+Madhya Pradesh,23~23,Khandwa,10
+Madhya Pradesh,23~23,Mandla,41
+Madhya Pradesh,23~23,Khargone,16
+Madhya Pradesh,23~23,Mandsaur,35
+Madhya Pradesh,23~23,Morena,15
+Madhya Pradesh,23~23,Narsinghpur,2
+Madhya Pradesh,23~23,Neemuch,17
+Madhya Pradesh,23~23,Panna,7
+Madhya Pradesh,23~23,Raisen,24
+Madhya Pradesh,23~23,Rajgarh,14
+Madhya Pradesh,23~23,Ratlam,42
+Madhya Pradesh,23~23,Rewa,46
+Madhya Pradesh,23~23,Sagar,43
+Madhya Pradesh,23~23,Satna,32
+Madhya Pradesh,23~23,Sehore,25
+Madhya Pradesh,23~23,Seoni,33
+Madhya Pradesh,23~23,Shahdol,11
+Madhya Pradesh,23~23,Shajapur,19
+Madhya Pradesh,23~23,Sheopur,12
+Madhya Pradesh,23~23,Shivpuri,23
+Madhya Pradesh,23~23,Sidhi,21
+Madhya Pradesh,23~23,Singrauli,31
+Madhya Pradesh,23~23,Tikamgarh,36
+Madhya Pradesh,23~23,Ujjain,45
+Madhya Pradesh,23~23,Umaria,5
+Madhya Pradesh,23~23,Vidisha,28
+Maharashtra,27~1,Ahmednagar,26
+Maharashtra,27~1,Akola,5
+Maharashtra,27~1,Amravati,7
+Maharashtra,27~1,Aurangabad,19
+Maharashtra,27~1,Beed,27
+Maharashtra,27~1,Bhandara,10
+Maharashtra,27~1,Buldhana,4
+Maharashtra,27~1,Chandrapur,13
+Maharashtra,27~1,Dhule,2
+Maharashtra,27~1,Gadchiroli,12
+Maharashtra,27~1,Gondia,11
+Maharashtra,27~1,Jalgaon,3
+Maharashtra,27~1,Jalna,18
+Maharashtra,27~1,Kolhapur,34
+Maharashtra,27~1,Latur,28
+Maharashtra,27~1,Mah State Cooperative Appellat,41
+Maharashtra,27~1,Maharashtra Industrial And Lab,40
+Maharashtra,27~1,Maharashtra-Family Courts,42
+Maharashtra,27~1,Maharashtra-School Tribunals,43
+Maharashtra,27~1,Mumbai,23
+Maharashtra,27~1,Mumbai,37
+Maharashtra,27~1,Mumbai,39
+Maharashtra,27~1,Mumbai,38
+Maharashtra,27~1,Nagpur,9
+Maharashtra,27~1,Nanded,15
+Maharashtra,27~1,Nandurbar,1
+Maharashtra,27~1,Nashik,20
+Maharashtra,27~1,Osmanabad,29
+Maharashtra,27~1,Parbhani,17
+Maharashtra,27~1,Pune,25
+Maharashtra,27~1,Raigad,24
+Maharashtra,27~1,Ratnagiri,32
+Maharashtra,27~1,Sangli,35
+Maharashtra,27~1,Satara,31
+Maharashtra,27~1,Sindhudurg,33
+Maharashtra,27~1,Solapur,30
+Maharashtra,27~1,Thane,21
+Maharashtra,27~1,Wardha,8
+Maharashtra,27~1,Washim,36
+Maharashtra,27~1,Yavatmal,14
+Manipur,14~25,Bishnupur,3
+Manipur,14~25,Chandel,8
+Manipur,14~25,Churachandpur,6
+Manipur,14~25,Imphal East,1
+Manipur,14~25,Imphal West,2
+Manipur,14~25,Senapati,5
+Manipur,14~25,Tamenglong,9
+Manipur,14~25,Thoubal,4
+Manipur,14~25,Ukhrul,7
+Meghalaya,17~21,East Garo Hills,4
+Meghalaya,17~21,East Khasi Hills,1
+Meghalaya,17~21,Ri Bhoi,5
+Meghalaya,17~21,South West Garo Hills,8
+Meghalaya,17~21,South West Khasi Hills,6
+Meghalaya,17~21,West Garo Hills,2
+Meghalaya,17~21,West Jaintia Hills,3
+Meghalaya,17~21,West Khasi Hills,7
+Mizoram,15~19,Aizawl,1
+Mizoram,15~19,Lunglei,2
+Nagaland,13~34,Dimapur,1
+Orissa,21~11,Anugul,27
+Orissa,21~11,Balangir,17
+Orissa,21~11,Balasore,5
+Orissa,21~11,Bargarh,29
+Orissa,21~11,Bhadrak,18
+Orissa,21~11,Boudh,24
+Orissa,21~11,Cuttack,1
+Orissa,21~11,Deogarh,30
+Orissa,21~11,Dhenkanal,7
+Orissa,21~11,Gajapati,9
+Orissa,21~11,Ganjam,4
+Orissa,21~11,Jagatsinghpur,14
+Orissa,21~11,Jajpur,19
+Orissa,21~11,Jharsuguda,12
+Orissa,21~11,Kalahandi,10
+Orissa,21~11,Kandhamal,23
+Orissa,21~11,Kendrapada,2
+Orissa,21~11,Keonjhar,13
+Orissa,21~11,Khurda,8
+Orissa,21~11,Koraput,6
+Orissa,21~11,Malkangiri,31
+Orissa,21~11,Mayurbhanj,26
+Orissa,21~11,Nabarangpur,32
+Orissa,21~11,Nayagarh,22
+Orissa,21~11,Nuapada,3
+Orissa,21~11,Puri,15
+Orissa,21~11,Rayagada,21
+Orissa,21~11,Sambalpur,11
+Orissa,21~11,Sonepur,20
+Orissa,21~11,Sundargarh,16
+Punjab,3~22,Amritsar,8
+Punjab,3~22,Barnala,16
+Punjab,3~22,Bathinda,17
+Punjab,3~22,Faridkot,9
+Punjab,3~22,Fatehgarh Sahib,4
+Punjab,3~22,Fazilka,26
+Punjab,3~22,Ferozepur,6
+Punjab,3~22,Gurdaspur,10
+Punjab,3~22,Hoshiarpur,18
+Punjab,3~22,Jalandhar,2
+Punjab,3~22,Kapurthala,11
+Punjab,3~22,Ludhiana,1
+Punjab,3~22,Mansa,13
+Punjab,3~22,Moga,12
+Punjab,3~22,Mohali,24
+Punjab,3~22,Pathankot,21
+Punjab,3~22,Patiala,5
+Punjab,3~22,Rupnagar,3
+Punjab,3~22,Sbs Nagar,15
+Punjab,3~22,Sangrur,19
+Punjab,3~22,Sri Muktsar Sahib,14
+Punjab,3~22,Tarn Taran,23
+Rajasthan,8~9,Ajmer,14
+Rajasthan,8~9,Alwar,2
+Rajasthan,8~9,Barmer,27
+Rajasthan,8~9,Banswara,25
+Rajasthan,8~9,Baran,12
+Rajasthan,8~9,Bharatpur,13
+Rajasthan,8~9,Bhilwara,31
+Rajasthan,8~9,Bikaner,6
+Rajasthan,8~9,Bundi,10
+Rajasthan,8~9,Chittorgarh,30
+Rajasthan,8~9,Churu,33
+Rajasthan,8~9,Dausa,3
+Rajasthan,8~9,Dholpur,34
+Rajasthan,8~9,Dungarpur,24
+Rajasthan,8~9,Ganganagar,7
+Rajasthan,8~9,Hanumangarh,11
+Rajasthan,8~9,Jaipur,38
+Rajasthan,8~9,Jaipur,4
+Rajasthan,8~9,Jaipur,40
+Rajasthan,8~9,Jaiselmer,32
+Rajasthan,8~9,Jalore,21
+Rajasthan,8~9,Jhalawar,22
+Rajasthan,8~9,Jhunjhunu,18
+Rajasthan,8~9,Jodhpur,39
+Rajasthan,8~9,Jodhpur,28
+Rajasthan,8~9,Karauli,29
+Rajasthan,8~9,Kota,20
+Rajasthan,8~9,Nagaur,8
+Rajasthan,8~9,Pali,19
+Rajasthan,8~9,Pratapgarh,23
+Rajasthan,8~9,Rajsamand,1
+Rajasthan,8~9,Sawai Madhopur,36
+Rajasthan,8~9,Sikar,35
+Rajasthan,8~9,Sirohi,26
+Rajasthan,8~9,Tonk,5
+Rajasthan,8~9,Udaipur,9
+Sikkim,11~24,East Sikkim,4
+Sikkim,11~24,West Sikkim,3
+Sikkim,11~24,North Sikkim,2
+Sikkim,11~24,South Sikkim,1
+Tamil Nadu,33~10,Ariyalur,30
+Tamil Nadu,33~10,Chennai,13
+Tamil Nadu,33~10,Coimbatore,18
+Tamil Nadu,33~10,Cuddalore,20
+Tamil Nadu,33~10,Dharmapuri,1
+Tamil Nadu,33~10,Dindigul,27
+Tamil Nadu,33~10,Erode,24
+Tamil Nadu,33~10,Kancheepuram,31
+Tamil Nadu,33~10,Kanniyakumari,7
+Tamil Nadu,33~10,Karur,19
+Tamil Nadu,33~10,Krishnagiri,26
+Tamil Nadu,33~10,Madurai,15
+Tamil Nadu,33~10,Nagapattinam,6
+Tamil Nadu,33~10,Namakkal,5
+Tamil Nadu,33~10,Perambalur,23
+Tamil Nadu,33~10,Puducherry,28
+Tamil Nadu,33~10,Pudukkottai,2
+Tamil Nadu,33~10,Ramanathapuram,21
+Tamil Nadu,33~10,Salem,12
+Tamil Nadu,33~10,Sivagangai,29
+Tamil Nadu,33~10,Thanjavur,17
+Tamil Nadu,33~10,The Nilgiris,16
+Tamil Nadu,33~10,Theni,4
+Tamil Nadu,33~10,Thoothukudi,9
+Tamil Nadu,33~10,Tiruchirappalli,8
+Tamil Nadu,33~10,Tirunelveli,3
+Tamil Nadu,33~10,Tiruppur,33
+Tamil Nadu,33~10,Tiruvallur,32
+Tamil Nadu,33~10,Tiruvannamalai,22
+Tamil Nadu,33~10,Tiruvarur,25
+Tamil Nadu,33~10,Vellore,11
+Tamil Nadu,33~10,Viluppuram,10
+Tamil Nadu,33~10,Virudhunagar,14
+Telangana,36~29,Adilabad,1
+Telangana,36~29,Hyderabad,2
+Telangana,36~29,Karimnagar,3
+Telangana,36~29,Khammam,4
+Telangana,36~29,Mahabubnagar,5
+Telangana,36~29,Medak,6
+Telangana,36~29,Nalgonda,7
+Telangana,36~29,Nizamabad,8
+Telangana,36~29,Rangareddy,9
+Telangana,36~29,Warangal,10
+Tripura,16~20,Dhalai,11
+Tripura,16~20,Gomati,6
+Tripura,16~20,Khowai,10
+Tripura,16~20,North Tripura,2
+Tripura,16~20,Sipahijula,9
+Tripura,16~20,South Tripura,3
+Tripura,16~20,Unakoti,5
+Tripura,16~20,West Tripura,1
+Uttar Pradesh,9~13,Agra,30
+Uttar Pradesh,9~13,Aligarh,43
+Uttar Pradesh,9~13,Allahabad,1
+Uttar Pradesh,9~13,Ambedkar Nagar,15
+Uttar Pradesh,9~13,Auraiya,17
+Uttar Pradesh,9~13,Azamgarh,44
+Uttar Pradesh,9~13,Baghpat,45
+Uttar Pradesh,9~13,Bahraich,7
+Uttar Pradesh,9~13,Ballia,21
+Uttar Pradesh,9~13,Balrampur,67
+Uttar Pradesh,9~13,Banda,39
+Uttar Pradesh,9~13,Barabanki,36
+Uttar Pradesh,9~13,Bareilly,2
+Uttar Pradesh,9~13,Basti,46
+Uttar Pradesh,9~13,Bhadohi SR Nagar,22
+Uttar Pradesh,9~13,Bijnor,47
+Uttar Pradesh,9~13,Budaun,18
+Uttar Pradesh,9~13,Bulandshahr,48
+Uttar Pradesh,9~13,Chandauli,75
+Uttar Pradesh,9~13,Chitrakoot,5
+Uttar Pradesh,9~13,Deoria,41
+Uttar Pradesh,9~13,Etah,25
+Uttar Pradesh,9~13,Etawah,33
+Uttar Pradesh,9~13,Faizabad,49
+Uttar Pradesh,9~13,Farrukhabad,63
+Uttar Pradesh,9~13,Fatehpur,9
+Uttar Pradesh,9~13,Firozabad,29
+Uttar Pradesh,9~13,Gautam Buddha Nagar,20
+Uttar Pradesh,9~13,Ghaziabad,8
+Uttar Pradesh,9~13,Ghazipur,28
+Uttar Pradesh,9~13,Gonda,50
+Uttar Pradesh,9~13,Gorakhpur,3
+Uttar Pradesh,9~13,Hamirpur,64
+Uttar Pradesh,9~13,Hapur,73
+Uttar Pradesh,9~13,Hardoi,4
+Uttar Pradesh,9~13,Hathras,65
+Uttar Pradesh,9~13,Jalaun,70
+Uttar Pradesh,9~13,Jaunpur,12
+Uttar Pradesh,9~13,Jhansi,66
+Uttar Pradesh,9~13,Jyotiba Phule Nagar,35
+Uttar Pradesh,9~13,Kannauj,69
+Uttar Pradesh,9~13,Kanpur Dehat,51
+Uttar Pradesh,9~13,Kanpur Nagar,19
+Uttar Pradesh,9~13,Kanshi Ram Nagar,40
+Uttar Pradesh,9~13,Kaushambi,37
+Uttar Pradesh,9~13,Kushinagar,34
+Uttar Pradesh,9~13,Lakhimpur Kheri,10
+Uttar Pradesh,9~13,Lalitpur,23
+Uttar Pradesh,9~13,Lucknow,24
+Uttar Pradesh,9~13,Maharajganj,52
+Uttar Pradesh,9~13,Mahoba,38
+Uttar Pradesh,9~13,Mainpuri,14
+Uttar Pradesh,9~13,Mathura,53
+Uttar Pradesh,9~13,Mau,42
+Uttar Pradesh,9~13,Meerut,6
+Uttar Pradesh,9~13,Mirzapur,68
+Uttar Pradesh,9~13,Moradabad,54
+Uttar Pradesh,9~13,Muzaffarnagar,26
+Uttar Pradesh,9~13,Pilibhit,13
+Uttar Pradesh,9~13,Pratapgarh,31
+Uttar Pradesh,9~13,Raebareli,55
+Uttar Pradesh,9~13,Rampur,56
+Uttar Pradesh,9~13,Saharanpur,57
+Uttar Pradesh,9~13,Sambhal,74
+Uttar Pradesh,9~13,Santkabir Nagar,71
+Uttar Pradesh,9~13,Shahjahanpur,58
+Uttar Pradesh,9~13,Shamli,76
+Uttar Pradesh,9~13,Shravasti,11
+Uttar Pradesh,9~13,Siddharthnagar,59
+Uttar Pradesh,9~13,Sitapur,16
+Uttar Pradesh,9~13,Sonbhadra,60
+Uttar Pradesh,9~13,Sultanpur,61
+Uttar Pradesh,9~13,Unnao,62
+Uttar Pradesh,9~13,Varanasi,27
+Uttarakhand,5~15,Almora,7
+Uttarakhand,5~15,Bageshwar,14
+Uttarakhand,5~15,Chamoli,8
+Uttarakhand,5~15,Champawat,13
+Uttarakhand,5~15,Dehradun,5
+Uttarakhand,5~15,Haridwar,9
+Uttarakhand,5~15,Nainital,1
+Uttarakhand,5~15,Garhwal,2
+Uttarakhand,5~15,Pithoragarh,15
+Uttarakhand,5~15,Rudraprayag,16
+Uttarakhand,5~15,Tehri Garhwal,3
+Uttarakhand,5~15,Udham Singh Nagar,4
+Uttarakhand,5~15,Uttarkashi,6
+West Bengal,19~16,Bankura,19
+West Bengal,19~16,Birbhum,8
+West Bengal,19~16,Calcutta,3
+West Bengal,19~16,Coochbehar,6
+West Bengal,19~16,Darjeeling,17
+West Bengal,19~16,Hooghly,2
+West Bengal,19~16,Howrah,11
+West Bengal,19~16,Jalpaiguri,4
+West Bengal,19~16,Jhargram,25
+West Bengal,19~16,Malda,1
+West Bengal,19~16,Murshidabad,12
+West Bengal,19~16,Nadia,22
+West Bengal,19~16,North Twenty Four Parganas,14
+West Bengal,19~16,North Dinajpur,21
+West Bengal,19~16,Barddhaman,24
+West Bengal,19~16,Paschim Medinpur,7
+West Bengal,19~16,Barddhaman,18
+West Bengal,19~16,Purba Medinipur,9
+West Bengal,19~16,Purulia,10
+West Bengal,19~16,South Dinajpur,13
+West Bengal,19~16,South Twenty Four Parganas,20
+West Bengal,19~16,Kalimpong,23

@@ -1,0 +1,196 @@
+---
+title: "Data scraping from NJDG"
+author: "Aditya Jeevannavar"
+date: "24/01/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(rvest)
+library(xml2)
+library(sf)
+library(data.table)
+library(foreach)
+library(doParallel)
+setwd("~/eggsy/Projects/Data Visualization/Case Pendency")
+```
+
+Custom Functions
+```{r}
+transpose_df <- function(df) {
+  t_df <- data.table::transpose(df)
+  colnames(t_df) <- rownames(df)
+  rownames(t_df) <- colnames(df)
+  t_df <- t_df %>%
+    tibble::rownames_to_column(.data = .) %>%
+    tibble::as_tibble(.)
+  return(t_df)
+}
+```
+
+Reading the state and district codes
+```{r}
+state_codes <- read_csv("state_codes.csv")
+district_codes <- read_csv("district_codes.csv")
+```
+
+Getting the type_and_particulars right
+```{r}
+state_url <- paste0("https://njdg.ecourts.gov.in/njdgnew/?p=main/index&state_code=", state_codes$Code[10])
+webpage <- read_html(state_url)
+tbls_ls <- webpage %>%
+        html_nodes("table") %>%
+        .[2] %>%
+        html_table(fill = TRUE)
+df <- tbls_ls[[1]]
+
+types_and_particulars <- as_tibble(df[1:2], .name_repair = "unique") %>% rename("Type" = "...1")
+write_csv(types_and_particulars, "type_and_particulars.csv")
+rm(state_url, webpage, tbls_ls, df)
+```
+
+Scraping the states
+```{r}
+num_cores <- detectCores()
+cl <- makeCluster(num_cores)
+registerDoParallel(cl)
+cases_states <- foreach(i=1:nrow(state_codes), .combine = "rbind") %do% {
+        state_url <- paste0("https://njdg.ecourts.gov.in/njdgnew/?p=main/index&state_code=", state_codes$Code[i])
+        webpage <- read_html(state_url)
+        tbls_ls <- webpage %>%
+                html_nodes("table") %>%
+                .[2] %>%
+                html_table(fill = TRUE)
+        df <- tbls_ls[[1]]
+        df <- df %>%
+                select(2:5) %>%
+                pivot_longer(cols=c("Civil", "Criminal", "Total"), names_to="Type", values_to="Numbers") %>%
+                unite("Particulars", 1:2)
+        df$Numbers <- as.numeric(str_trim(str_replace(df$Numbers, "\\(.*\\%\\)", "")))
+        df <- column_to_rownames(df, var = "Particulars")
+        df <- transpose_df(df)
+        slice(df,1)
+}
+stopCluster(cl)
+cases_states <- cbind(State=state_codes$State, cases_states[2:ncol(cases_states)])
+write_csv(cases_states, "states_cases.csv")
+rm(df, state_url, webpage, tbls_ls)
+```
+
+Scraping the districts
+```{r}
+#num_cores <- detectCores()
+#cl <- makeCluster(num_cores)
+#registerDoParallel(cl)
+cases_districts <- foreach(i=1:nrow(district_codes), .combine = "rbind") %do% {
+        dist_url <- paste0("https://njdg.ecourts.gov.in/njdgnew/?p=main/index&state_code=", district_codes$state_code[i], "&dist_code=", district_codes$district_code[i], "&est_code=undefined")
+        webpage <- read_html(dist_url)
+        tbls_ls <- webpage %>%
+                html_nodes("table") %>%
+                .[2] %>%
+                html_table(fill = TRUE)
+        df <- tbls_ls[[1]]
+        df <- df %>%
+                select(2:5) %>%
+                pivot_longer(cols=c("Civil", "Criminal", "Total"), names_to="Type", values_to="Numbers") %>%
+                unite("Particulars", 1:2)
+        df$Numbers <- as.numeric(str_trim(str_replace(df$Numbers, "\\(.*\\%\\)", "")))
+        df <- column_to_rownames(df, var = "Particulars")
+        df <- transpose_df(df)
+        slice(df,1)
+}
+#stopCluster(cl)
+cases_districts <- cbind(State=district_codes$State, District=district_codes$District, cases_districts[2:ncol(cases_districts)])
+
+## Summing over duplicates
+cases_districts <- stats::aggregate(cases_districts[,3:ncol(cases_districts)], by=list(cases_districts$State, cases_districts$District), FUN=sum) %>% rename(State = Group.1, District = Group.2)
+
+write_csv(cases_districts, "districts_cases.csv")
+rm(df, state_url, webpage, tbls_ls)
+```
+
+
+### Alterations to the sf geometry
+1. Combine the three Andaman and Nicobar Islands to one.
+2. Delete Arunachal Pradesh. Actually no. Right join.
+In the report, mention that no data for Arunachal Pradesh is available on the NJDG
+3. Combining with right join and replace emptys with zero. Zero would mean that no cases info was found for that
+4. NJDG has a few extra districts, remove them by carefully joining
+**5. In the cases list, Mumbai will have multiple entries, add em (group by dist, and sum across)**
+
+
+
+Load the shapefile. 
+Get only district and state names. 
+Replace them with those from corrected names.
+Groupby district and aggregate.
+Export shapefile
+```{r}
+raw_shapefile <- read_sf("DemoIndia-shp/Demographics_of_India.shp")
+corrected_names <- read_csv("corrected_names.csv")
+
+corrected_shapefile <- raw_shapefile %>% 
+  select(statename, distname, geometry) %>%
+  rename(State = statename, District = distname)
+corrected_shapefile$State <- corrected_names$State
+corrected_shapefile$District <- corrected_names$District
+
+# There are a couple duplications in the districts column whose shapes are being combined here. Paste is being used because some district names are common to multiple states
+corrected_shapefile <- aggregate(corrected_shapefile, by=list(paste(corrected_shapefile$District, corrected_shapefile$State)), FUN = unique, areaWeighted=TRUE) %>% select(!Group.1)
+
+st_write(corrected_shapefile, "Map_data/district_level_data.shp", append = FALSE)
+```
+
+Then groupby state and aggregate.
+Export shapefile
+```{r}
+state_shape <- aggregate(corrected_shapefile, by=list(corrected_shapefile$State), FUN = unique, areaWeighted=TRUE) %>% select(State)
+
+st_write(state_shape, "Map_data/state_level_data.shp", append = FALSE)
+```
+
+In the cases file, there are some duplications, sum over them
+```{r}
+cases_districts <- read_csv("districts_cases.csv")
+cases_districts <- stats::aggregate(cases_districts[,3:ncol(cases_districts)], by=list(cases_districts$State, cases_districts$District), FUN=sum) %>% rename(State = Group.1, District = Group.2)
+```
+
+Right join the cases files to this and replace NAs with zeros. Make sure to combine state and district names coz of common names in different states.
+```{r}
+cases_states <- read_csv("states_cases.csv")
+all_data_states <- right_join(cases_states, state_shape, by = c("State")) %>%
+  mutate_if(is.numeric,coalesce,0)
+# I'm not saving this as another file set because it can be combined later when needed. I've just joined it here to see how it would be
+
+cases_districts$paste <- paste(cases_districts$District, cases_districts$State)
+corrected_shapefile$paste <- paste(corrected_shapefile$District, corrected_shapefile$State)
+all_data_districts <- right_join(temp2, corrected_shapefile, by = c("paste", "State", "District")) %>%
+  mutate_if(is.numeric,coalesce,0)
+
+
+ggplot(all_data_districts, aes(fill=Total_Total, geometry=geometry))+
+  geom_sf()+
+  scale_fill_continuous(type="viridis", option="magma")
+```
+
+Get population data for states.
+These populations are according to the 2011 census
+```{r}
+population_districts <- tibble(State=corrected_names$State,
+                               District=corrected_names$District, 
+                               `Population (Total)`=raw_shapefile$tot_p, 
+                               `Population (M)`=raw_shapefile$tot_m, 
+                               `Population (F)`=raw_shapefile$tot_f) %>%
+  mutate_if(is.numeric,coalesce,0)
+
+population_districts <- stats::aggregate(population_districts[3:5], by=list(population_districts$State, population_districts$District), FUN=sum) %>%
+  rename(State=Group.1, District=Group.2)
+
+population_states <- stats::aggregate(population_districts[3:5], by=list(population_districts$State), FUN=sum) %>%
+  rename(State=Group.1)
+
+write_csv(population_districts, "districts_population.csv")
+write_csv(population_states, "states_population.csv")
+```
