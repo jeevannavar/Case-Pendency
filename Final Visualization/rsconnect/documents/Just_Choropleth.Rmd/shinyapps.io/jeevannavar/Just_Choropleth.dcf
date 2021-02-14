@@ -1,0 +1,12 @@
+name: Just_Choropleth
+title: Just_Choropleth
+username:
+account: jeevannavar
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 3634497
+bundleId: 4220445
+url: https://jeevannavar.shinyapps.io/Just_Choropleth/
+when: 1613283505.79697
+asMultiple: FALSE
+asStatic: FALSE

@@ -1,0 +1,369 @@
+---
+title: "Case Pendency in India"
+resource_files:
+- Map_data/state_level_data.shx
+- Map_data/state_level_data.prj
+- Map_data/state_level_data.dbf
+- Map_data/district_level_data.shx
+- Map_data/district_level_data.dbf
+- Map_data/district_level_data.prj
+- Map_data/state_level_data.shp
+- Map_data/district_level_data.shp
+runtime: shiny
+output:
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill 
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(tidyverse)
+library(shiny)
+library(plotly)
+library(sf)
+library(ggrepel)
+library(scales)
+if(!identical(getOption("bitmapType"), "cairo") && isTRUE(capabilities()[["cairo"]])){
+  options(bitmapType = "cairo")
+}
+```
+
+
+```{r data import, include=FALSE}
+# Data Import
+## State Level Data
+states_cases <- read_csv("states_cases.csv")
+states_map <- read_sf("Map_data/state_level_data.shp")
+states_pop <- read_csv("states_population.csv")
+
+## District Level Data
+districts_cases <- read_csv("districts_cases.csv")
+districts_map <- read_sf("Map_data/district_level_data.shp")
+districts_pop <- read_csv("districts_population.csv")
+
+#General Data
+t_and_p <- read_csv("type_and_particulars.csv")
+types <- unique(t_and_p$Type)
+
+## Custom functions
+transpose_df <- function(df) {
+  t_df <- data.table::transpose(df)
+  colnames(t_df) <- rownames(df)
+  rownames(t_df) <- colnames(df)
+  t_df <- t_df %>%
+    tibble::rownames_to_column(.data = .) %>%
+    tibble::as_tibble(.)
+  return(t_df)
+}
+```
+
+The Map
+======================================================================
+
+Inputs {.sidebar}
+-----------------------------------------------------------------------
+### Select from the options below
+```{r}
+# Option one to select between state level or district level
+selectInput("level", "Select the level at which you would like the data displayed",
+            choices = c("State", "District"),
+            selected = "State")
+
+# Option two to select between criminal, civil, or total. Default = Total
+selectInput("kind", "Select among Criminal, Civil, or Total cases to be displayed",
+            choices = c("Criminal", "Civil", "Total"),
+            selected = "Total")
+
+# Option three to select what type of data to select, from type and particulars. Default = Pending Cases, which is equivalent to age
+selectInput("type", "Select what way you would like to categorise the data",
+            choices = types,
+            selected = "Pending Cases")
+
+# Option four to select the variable from that type. Default = Total
+renderUI({
+  selectInput("particular", "Select the category of cases to be displayed",
+              choices = c(t_and_p$Particulars[t_and_p$Type==input$type]),
+              selected = "Total")
+})
+
+# Option to select the bin sizes. Default = 10
+numericInput("range", "Select the size of the intervals",
+             value = 10,
+             min = 5,
+             max = 20,
+             step = 5)
+```
+
+Choropleth
+-----------------------------------------------------------------------
+### Distribution of Pending Cases in District and Taluka Courts in the Country (per thousand citizens)
+```{r the-map}
+uiOutput("dynamic")
+
+# for more interactive (zoom, information on hover etc.), but more memory intensive plots, follow the instructions in the comments in this code chunk
+
+output$dynamic <- renderUI({
+  if (input$level=="State") plotOutput("state") #use plotlyOutput instead
+  else plotOutput("district")                   #use plotlyOutput instead
+})
+  
+output$state <- renderPlot({                    #use renderPlotly instead
+    variable <- paste(input$particular, input$kind, sep = "_")
+    
+    temp <- left_join(states_map, select(states_cases, State, variable), by=c("State"))
+    temp <- left_join(temp, states_pop, by=c("State"))
+    temp <- mutate_if(temp, is.numeric, coalesce, 0)
+    temp <- select(temp, State, geometry, "Cases" = variable, `Population (Total)`)
+    temp <- mutate(temp, "Per Thousand" = Cases/`Population (Total)`*1000)
+    temp <- mutate(temp, "Bins" = cut_interval(`Per Thousand`, length = input$range))
+    #ggplotly(                                 #uncomment the command
+      ggplot(temp, aes(geometry=geometry, fill=Bins, State=State, Cases=Cases, Population=`Population (Total)`, Per_Thousand=`Per Thousand`))+
+      geom_sf()+
+      theme_void()+
+      labs(fill="")#,                         #uncomment the comma and the next 5 lines 
+    #tooltip = c("State", "Cases", "Population", "Per_Thousand")
+    #) %>% layout(legend = list(orientation = "v", x = 0.8, y = 0.5, 
+    #                         title=list(text = "Cases, per 1000")),
+    #           xaxis = list(visible = FALSE),
+    #           yaxis = list(visible = FALSE))
+})
+
+output$district <- renderPlot({               #use renderPlotly instead
+  variable <- paste(input$particular, input$kind, sep = "_")
+
+    temp <- left_join(districts_map, select(districts_cases, State, District, variable), by=c("State", "District"))
+    temp <- left_join(temp, districts_pop, by=c("State", "District"))
+    temp <- mutate_if(temp, is.numeric, coalesce, 0)
+    temp <- select(temp, State, District, geometry, "Variable" = variable, `Population (Total)`)
+    temp <- mutate(temp, "Per_Thousand" = Variable/`Population (Total)`*1000)
+    temp <- mutate(temp, "Bins" = cut_interval(Per_Thousand, length = input$range))
+    #ggplotly(                                #uncomment command
+      ggplot(temp, aes(geometry=geometry, fill=Bins, District=District, State=State, Cases=Per_Thousand))+
+      geom_sf(colour="darkslategrey")+
+      geom_sf(data=states_map, fill=NA, colour="black", inherit.aes = FALSE)+
+      theme_void()+
+      labs(fill="")#,                        #uncomment comma and the next 5 lines
+    #tooltip = c("District", "State", "Cases")
+  #) %>% layout(legend = list(orientation = "v", x = 0.8, y = 0.5, 
+  #                           title=list(text = "Cases, per 1000")),
+  #             xaxis = list(visible = FALSE),
+  #             yaxis = list(visible = FALSE))
+})
+```
+
+Distribution
+========================================================================
+
+Column 1 {.tabset}
+-------------------------------------------------------------------------
+### States
+```{r}
+states <- inner_join(states_pop, states_cases, by = c("State")) %>%
+  select(State, `Population (Total)`, `Pending Cases (Total)`=Total_Total) %>%
+  filter(`Population (Total)` > 0)
+
+ggplot(states, aes(x=`Population (Total)`, y=`Pending Cases (Total)`, label = State))+
+  geom_point()+
+  geom_smooth(method = "lm")+
+  geom_text_repel(max.overlaps = 20)+
+  scale_x_continuous(labels = comma)+
+  scale_y_continuous(labels = comma)+
+  theme_minimal()+
+  labs(title = "Pendency of Cases vs Population Size of the States")
+```
+
+### Districts
+```{r}
+districts <- inner_join(districts_pop, districts_cases, by = c("State", "District")) %>%
+  select(State, District, `Population (Total)`, `Pending Cases (Total)`=Total_Total) %>%
+  filter(`Population (Total)` > 0)
+
+ggplot(districts, aes(x=`Population (Total)`, y=`Pending Cases (Total)`, label = District))+
+  geom_point()+
+  geom_smooth(method = "lm")+
+  geom_text_repel(max.overlaps = 10)+
+  scale_x_continuous(labels = comma)+
+  scale_y_continuous(labels = comma)+
+  theme_minimal()+
+  labs(title = "Pendency of Cases vs Population Size of the Districts")
+```
+
+### Comments
+
+These plots display the number of pending cases per capita. States/districts with above or below average number of pending cases per capita are labelled. 
+
+In the districts plot, you can observe that Mumbai and Calcutta appear to have a much higher incidence of pending cases than the average.
+
+
+Pendency (by State)
+=======================================================================
+
+Inputs {.sidebar}
+-----------------------------------------------------------------------
+### Select from the options below
+```{r}
+# Option one to select the state
+selectInput("State1", "Select state",
+            choices = states_cases$State,
+            selected = "Karnataka")
+```
+
+Big column
+-----------------------------------------------------------------------
+### Age of the pending cases in the chosen state
+```{r}
+renderPlotly({
+  area_chart <- states_cases %>%
+    filter(State == input$State1) %>%
+    transpose_df() %>%
+    rename("Number of Pending Cases" = `1`)
+  
+  temp <- str_split_fixed(area_chart$rowname, "_", 2)
+  area_chart$Age <- temp[,1]
+  area_chart$Type <- temp[,2]
+  area_chart$`Number of Pending Cases` <- as.numeric(area_chart$`Number of Pending Cases`)
+  
+  ages <- c("0 to 1 Years", "1 to 3 Years", "3 to 5 Years", "5 to 10 Years", "10 to 20 Years", "20 to 30 Years", "Above 30 Years")
+  area_chart <- filter(area_chart, Age %in% ages, Type %in% c("Criminal", "Civil"))
+  area_chart$Age <- factor(area_chart$Age, levels = ages)
+  
+  ggplotly(
+    ggplot(area_chart, aes(x=Age, y=`Number of Pending Cases`, group=Type, fill=Type))+
+      geom_area()+
+      scale_y_continuous(labels = comma)+
+      scale_fill_manual(values = c("Criminal"="red", "Civil"="gray"))+
+      theme_minimal()+
+      labs(fill="Type"),
+    tooltip = c("y", "x", "group")
+    ) %>% layout(legend = list(orientation = "v", x = 0.8, y = 0.5, 
+                               title=list(text = "Case Type"))
+    )
+})
+```
+
+
+Pendency (by District)
+=======================================================================
+
+Inputs {.sidebar}
+-----------------------------------------------------------------------
+### Select from the options below
+```{r}
+# Option one to select the state
+selectInput("State2", "Select state",
+            choices = states_cases$State,
+            selected = "Karnataka")
+
+districts_bystate <- split(districts_cases$District, districts_cases$State)
+renderUI(
+  selectInput("District", "Select district",
+              choices = districts_bystate[input$State2],
+              selected = "Belagavi")
+)
+```
+
+Big column
+-----------------------------------------------------------------------
+### Age of the pending cases in the chosen district
+```{r}
+renderPlotly({
+  area_chart <- districts_cases %>%
+    filter(State == input$State2, District == input$District) %>%
+    transpose_df() %>%
+    rename("Number of Pending Cases" = `1`)
+  
+  temp <- str_split_fixed(area_chart$rowname, "_", 2)
+  area_chart$Age <- temp[,1]
+  area_chart$Type <- temp[,2]
+  area_chart$`Number of Pending Cases` <- as.numeric(area_chart$`Number of Pending Cases`)
+  
+  ages <- c("0 to 1 Years", "1 to 3 Years", "3 to 5 Years", "5 to 10 Years", "10 to 20 Years", "20 to 30 Years", "Above 30 Years")
+  area_chart <- filter(area_chart, Age %in% ages, Type %in% c("Criminal", "Civil"))
+  area_chart$Age <- factor(area_chart$Age, levels = ages)
+  
+  ggplotly(
+    ggplot(area_chart, aes(x=Age, y=`Number of Pending Cases`, group=Type, fill=Type))+
+      geom_area()+
+      scale_y_continuous(labels = comma)+
+      scale_fill_manual(values = c("Criminal"="red", "Civil"="gray"))+
+      theme_minimal()+
+      labs(fill="Type"),
+    tooltip = c("y", "x", "group")
+    ) %>% layout(legend = list(orientation = "v", x = 0.8, y = 0.5, 
+                               title=list(text = "Case Type"))
+    )
+})
+```
+
+Minorities
+========================================================================
+Big Column {.tabset}
+------------------------------------------------------------------------
+
+### Women
+```{r}
+inner_join(states_pop, states_cases, by = c("State")) %>%
+  select(State, `Filed Cases By Woman_Total`, Total_Total, `Population (Total)`, `Population (F)`) %>%
+  mutate(`Cases by women` = `Filed Cases By Woman_Total`/`Population (Total)`*10000,
+         `Total cases` = `Total_Total`/`Population (Total)`*10000,
+         `Number of women per hundred citizens` = `Population (F)`/`Population (Total)`*100) %>%
+  mutate(State = fct_reorder(State, desc(`Total cases`))) %>%
+  select(!c(`Filed Cases By Woman_Total`,Total_Total, `Population (Total)`)) %>%
+  pivot_longer(cols = c("Cases by women", "Total cases"), names_to = "Type", values_to = "Cases") %>%
+  ggplot(aes(x=State, y=Cases, group=Type, fill=Type))+
+  geom_area(position = "identity", alpha = 0.5)+
+  geom_line(aes(y=`Number of women per hundred citizens`/0.16))+
+  scale_y_continuous(sec.axis = sec_axis(~.*0.16, name="Percentage of women"))+
+  theme_minimal()+
+  theme(legend.position = c(0.8, 0.8),
+        axis.text.x = element_text(angle=90, hjust = 0.95, vjust = 0.2))+
+  scale_fill_manual(values = c("Cases by women"="red", "Total cases"="gray"))+
+  labs(y = "Cases per capita (x10,000)",
+       title = "Pending cases registered by women as a fraction of total")
+```
+
+### Senior citizens
+```{r}
+inner_join(states_pop, states_cases, by = c("State")) %>%
+  select(State, `Filed Cases By Senior Citizen_Total`, Total_Total, `Population (Total)`) %>%
+  mutate(`Cases by senior citizens` = `Filed Cases By Senior Citizen_Total`/`Population (Total)`*10000,
+         `Total cases` = `Total_Total`/`Population (Total)`*10000) %>%
+  mutate(State = fct_reorder(State, desc(`Total cases`))) %>%
+  select(!c(`Filed Cases By Senior Citizen_Total`,Total_Total, `Population (Total)`)) %>%
+  pivot_longer(cols = c("Cases by senior citizens", "Total cases"), names_to = "Type", values_to = "Cases") %>%
+  ggplot(aes(x=State, y=Cases, group=Type, fill=Type))+
+  geom_area(position = "identity", alpha = 0.5)+
+  theme_minimal()+
+  theme(legend.position = c(0.8, 0.8),
+        axis.text.x = element_text(angle=90, hjust = 0.95, vjust = 0.2))+
+  scale_fill_manual(values = c("Cases by senior citizens"="red", "Total cases"="gray"))+
+  labs(y = "Cases per capita (x10,000)",
+       title = "Pending cases registered by senior citizens as a fraction of total")
+  ```
+
+
+Information
+========================================================================
+### Data Source
+
+I obtained (scraped) the data from the National Judicial Data Grid, on Friday, the 29th of January, 2021. Case pendency for District and Taluka courts are available here: <https://njdg.ecourts.gov.in/njdgnew/>.
+
+I obtained the map and population data from ArcGIS hub, here <https://hub.arcgis.com/datasets/esriindia1::demographics-of-india>. The data source is esri and can be checked out using the living atlas service here <https://livingatlas.esri.in/server/rest/services/LivingAtlas/IND_Demography/MapServer/0>.
+
+
+### Methods
+
+I've used R and RStudio to create these visualizations. I've been learning these visualization skills as part of a Coursera course on [Data Visualization and Dashboarding with R](https://www.coursera.org/specializations/jhu-data-visualization-dashboarding-with-r), and this is my first independent project. Do checkout the course. It's plenty useful.
+
+I've used the `rvest` and `xml2` R packages to scrape the data from the National Judicial Data Grid, where the data were stored as html tables on multiple webpages. I've used `tidyverse`, `flexdashboard`, `shiny`, `plotly`, `sf`, `ggrepel`, and `scales` R packages and their dependencies for the dashboard itself. 
+      
+### Project Storage
+
+All the code used in the making of this dashboard can be found on my github at <https://github.com/jeevannavar/Case-Pendency>.
+
+### Additional Comments
+
+There are many districts and one state (Arunachal Pradesh) which appear to have zero pending cases. This is because of missing data. It either means that the district/state does not have a district/taluka court in the region and comes under the jurisdiction of a neighbouring district, or like in the case of Arunachal Pradesh (and some regions in Ladakh), it is not under the jurisdiction of any Indian civilian court and is occupied by an Indian or foreign military.
+
+I had intended, as you will be able to see from the code on my github, that the choropleths be plotly figures. That way, you'd be able to hover over images and see information like the state/district, population, raw case numbers, per capita case numbers, etc. But it requires a lot more RAM than the shinyapps.io free tier offering and I cannot afford the higher tiers. It is really disappointing.
