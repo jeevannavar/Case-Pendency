@@ -1,23 +1,23 @@
 ---
-title: "Data scraping from NJDG"
-author: "Aditya Jeevannavar"
-date: "24/01/2021"
+title: "Data Scraping from NJDG and Some Data Clean-Up"
+author: "Jeevannavar"
+date: "14/02/2021"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+# R Setup
+
+Loading required packages
+```{r setup}
 library(tidyverse)
 library(rvest)
 library(xml2)
 library(sf)
 library(data.table)
 library(foreach)
-library(doParallel)
-setwd("~/eggsy/Projects/Data Visualization/Case Pendency")
 ```
 
-Custom Functions
+Custom function for transposing a data.frame
 ```{r}
 transpose_df <- function(df) {
   t_df <- data.table::transpose(df)
@@ -30,13 +30,23 @@ transpose_df <- function(df) {
 }
 ```
 
-Reading the state and district codes
+# Data scraping from the National Judicial Data Grid
+
+## Reading the state and district codes
+
+I manually curated these state and district codes' csv files, with some use of that small python script that's also included in this folder.
 ```{r}
 state_codes <- read_csv("state_codes.csv")
 district_codes <- read_csv("district_codes.csv")
 ```
 
-Getting the type_and_particulars right
+## Getting the type_and_particulars right
+
+This small data.frame is useful in one of the options in the final visualization. Also the data scraping outline that I will use is illustrated here. 
+
+First, I read the html file at the url.  
+Second, I get all the html tables in the page.  
+Third, I select the requisite table, convert it to a data.frame, and write it to file.
 ```{r}
 state_url <- paste0("https://njdg.ecourts.gov.in/njdgnew/?p=main/index&state_code=", state_codes$Code[10])
 webpage <- read_html(state_url)
@@ -51,13 +61,14 @@ write_csv(types_and_particulars, "type_and_particulars.csv")
 rm(state_url, webpage, tbls_ls, df)
 ```
 
-Scraping the states
+## Scraping state level data
+
+Here, I am getting the html table for each state/union territory, flattening it, and then storing it in a data.frame.
+
+I only use `%do%` for the `foreach` chunk. This runs it on a single core/thread. To use parallel processing, you can use `%dopar%`, and `doParallel` library to set up the cluster of cores.
 ```{r}
-num_cores <- detectCores()
-cl <- makeCluster(num_cores)
-registerDoParallel(cl)
 cases_states <- foreach(i=1:nrow(state_codes), .combine = "rbind") %do% {
-        state_url <- paste0("https://njdg.ecourts.gov.in/njdgnew/?p=main/index&state_code=", state_codes$Code[i])
+          state_url <- paste0("https://njdg.ecourts.gov.in/njdgnew/?p=main/index&state_code=", state_codes$Code[i])
         webpage <- read_html(state_url)
         tbls_ls <- webpage %>%
                 html_nodes("table") %>%
@@ -73,17 +84,17 @@ cases_states <- foreach(i=1:nrow(state_codes), .combine = "rbind") %do% {
         df <- transpose_df(df)
         slice(df,1)
 }
-stopCluster(cl)
 cases_states <- cbind(State=state_codes$State, cases_states[2:ncol(cases_states)])
 write_csv(cases_states, "states_cases.csv")
 rm(df, state_url, webpage, tbls_ls)
 ```
 
-Scraping the districts
+## Scraping district level data
+
+Here, I am getting the html table for each district in each state (at least what is available in NJDG), flattening it, and then storing it in a data.frame.
+
+I only use `%do%` for the `foreach` chunk. This runs it on a single core/thread. To use parallel processing, you can use `%dopar%`, and `doParallel` library to set up the cluster of cores.
 ```{r}
-#num_cores <- detectCores()
-#cl <- makeCluster(num_cores)
-#registerDoParallel(cl)
 cases_districts <- foreach(i=1:nrow(district_codes), .combine = "rbind") %do% {
         dist_url <- paste0("https://njdg.ecourts.gov.in/njdgnew/?p=main/index&state_code=", district_codes$state_code[i], "&dist_code=", district_codes$district_code[i], "&est_code=undefined")
         webpage <- read_html(dist_url)
@@ -101,32 +112,27 @@ cases_districts <- foreach(i=1:nrow(district_codes), .combine = "rbind") %do% {
         df <- transpose_df(df)
         slice(df,1)
 }
-#stopCluster(cl)
+
 cases_districts <- cbind(State=district_codes$State, District=district_codes$District, cases_districts[2:ncol(cases_districts)])
 
 ## Summing over duplicates
-cases_districts <- stats::aggregate(cases_districts[,3:ncol(cases_districts)], by=list(cases_districts$State, cases_districts$District), FUN=sum) %>% rename(State = Group.1, District = Group.2)
+cases_districts <- stats::aggregate(cases_districts[,3:ncol(cases_districts)], 
+                                    by=list(cases_districts$State, cases_districts$District), 
+                                    FUN=sum) %>% 
+  rename(State = Group.1, District = Group.2)
 
 write_csv(cases_districts, "districts_cases.csv")
 rm(df, state_url, webpage, tbls_ls)
 ```
 
+# Data Clean-Up
 
-### Alterations to the sf geometry
-1. Combine the three Andaman and Nicobar Islands to one.
-2. Delete Arunachal Pradesh. Actually no. Right join.
-In the report, mention that no data for Arunachal Pradesh is available on the NJDG
-3. Combining with right join and replace emptys with zero. Zero would mean that no cases info was found for that
-4. NJDG has a few extra districts, remove them by carefully joining
-**5. In the cases list, Mumbai will have multiple entries, add em (group by dist, and sum across)**
+## Shapefiles
 
+The map data is in the shape-file format. The shapefile obtained from Ecri (via ArcGIS) and the NJDG data have a few discrepancies in terms of state/district names. I resolved the discrepancies manually, and saved them to csv files termed corrected_names. Here, I'm taking the raw data and correcting the names.
 
+I am modifying the raw map data and then saving it as a new shapefile.
 
-Load the shapefile. 
-Get only district and state names. 
-Replace them with those from corrected names.
-Groupby district and aggregate.
-Export shapefile
 ```{r}
 raw_shapefile <- read_sf("DemoIndia-shp/Demographics_of_India.shp")
 corrected_names <- read_csv("corrected_names.csv")
@@ -134,49 +140,35 @@ corrected_names <- read_csv("corrected_names.csv")
 corrected_shapefile <- raw_shapefile %>% 
   select(statename, distname, geometry) %>%
   rename(State = statename, District = distname)
+
 corrected_shapefile$State <- corrected_names$State
 corrected_shapefile$District <- corrected_names$District
 
 # There are a couple duplications in the districts column whose shapes are being combined here. Paste is being used because some district names are common to multiple states
-corrected_shapefile <- aggregate(corrected_shapefile, by=list(paste(corrected_shapefile$District, corrected_shapefile$State)), FUN = unique, areaWeighted=TRUE) %>% select(!Group.1)
+corrected_shapefile <- aggregate(corrected_shapefile,
+                                 by=list(paste(corrected_shapefile$District, corrected_shapefile$State)), 
+                                 FUN = unique, areaWeighted=TRUE) %>% select(!Group.1)
 
 st_write(corrected_shapefile, "Map_data/district_level_data.shp", append = FALSE)
 ```
 
-Then groupby state and aggregate.
-Export shapefile
+## Forming state level map
+
+The raw map data I have here corresponds to districts. I am aggregating the polygons by state names to obtain a state level map. I then save it as another new shapefile.
+
+The two shapefiles I just wrote are the ones I will use for the final visualization.
+
 ```{r}
 state_shape <- aggregate(corrected_shapefile, by=list(corrected_shapefile$State), FUN = unique, areaWeighted=TRUE) %>% select(State)
 
 st_write(state_shape, "Map_data/state_level_data.shp", append = FALSE)
 ```
 
-In the cases file, there are some duplications, sum over them
-```{r}
-cases_districts <- read_csv("districts_cases.csv")
-cases_districts <- stats::aggregate(cases_districts[,3:ncol(cases_districts)], by=list(cases_districts$State, cases_districts$District), FUN=sum) %>% rename(State = Group.1, District = Group.2)
-```
+## Population data
 
-Right join the cases files to this and replace NAs with zeros. Make sure to combine state and district names coz of common names in different states.
-```{r}
-cases_states <- read_csv("states_cases.csv")
-all_data_states <- right_join(cases_states, state_shape, by = c("State")) %>%
-  mutate_if(is.numeric,coalesce,0)
-# I'm not saving this as another file set because it can be combined later when needed. I've just joined it here to see how it would be
+The 2011 census data is avaliable in the raw_shapefile that I loaded in an earlier chunk. The population data is taken from there. While I am not accounting for the increase in the population in the last 10 years, I still think it is useful because I'm more concerned with comparisons I will do with the data than interpret individual data points.
 
-cases_districts$paste <- paste(cases_districts$District, cases_districts$State)
-corrected_shapefile$paste <- paste(corrected_shapefile$District, corrected_shapefile$State)
-all_data_districts <- right_join(temp2, corrected_shapefile, by = c("paste", "State", "District")) %>%
-  mutate_if(is.numeric,coalesce,0)
-
-
-ggplot(all_data_districts, aes(fill=Total_Total, geometry=geometry))+
-  geom_sf()+
-  scale_fill_continuous(type="viridis", option="magma")
-```
-
-Get population data for states.
-These populations are according to the 2011 census
+The underlying assumption is that the population of all states/districts grew at the same rate. It's a shame it significantly didn't.
 ```{r}
 population_districts <- tibble(State=corrected_names$State,
                                District=corrected_names$District, 
@@ -185,10 +177,12 @@ population_districts <- tibble(State=corrected_names$State,
                                `Population (F)`=raw_shapefile$tot_f) %>%
   mutate_if(is.numeric,coalesce,0)
 
-population_districts <- stats::aggregate(population_districts[3:5], by=list(population_districts$State, population_districts$District), FUN=sum) %>%
+population_districts <- stats::aggregate(population_districts[3:5], 
+                                         by=list(population_districts$State, population_districts$District), FUN=sum) %>%
   rename(State=Group.1, District=Group.2)
 
-population_states <- stats::aggregate(population_districts[3:5], by=list(population_districts$State), FUN=sum) %>%
+population_states <- stats::aggregate(population_districts[3:5],
+                                      by=list(population_districts$State), FUN=sum) %>%
   rename(State=Group.1)
 
 write_csv(population_districts, "districts_population.csv")

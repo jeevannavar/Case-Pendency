@@ -7,8 +7,6 @@ resource_files:
 - Map_data/district_level_data.shx
 - Map_data/district_level_data.dbf
 - Map_data/district_level_data.prj
-- Map_data/state_level_data.shp
-- Map_data/district_level_data.shp
 runtime: shiny
 output:
   flexdashboard::flex_dashboard:
@@ -340,7 +338,7 @@ inner_join(states_pop, states_cases, by = c("State")) %>%
   scale_fill_manual(values = c("Cases by senior citizens"="red", "Total cases"="gray"))+
   labs(y = "Cases per capita (x10,000)",
        title = "Pending cases registered by senior citizens as a fraction of total")
-  ```
+```
 
 
 Information
